@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Myanmar TTS Test</title>
+<style>
+  body { background: #1a0a0f; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+  .card { background: #2a0f1a; border: 1px solid #C2185B; border-radius: 16px; padding: 40px; max-width: 500px; width: 90%; text-align: center; }
+  h2 { color: #C2185B; margin-bottom: 8px; }
+  p { color: #ccc; font-size: 14px; margin-bottom: 24px; line-height: 1.8; }
+  audio { width: 100%; margin-top: 16px; }
+  .label { background: #C2185B22; border: 1px solid #C2185B; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; font-size: 13px; color: #ffb3cc; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>🌸 Cherry Drama</h2>
+  <h3>Myanmar TTS Voice Test (gTTS)</h3>
+  <div class="label">
+    "ဒီဇာတ်ကားမှာ မင်းသားကြီးက သူ့ချစ်သူအတွက် ကမ္ဘာကြီးကိုပင် ရင်ဆိုင်ဖို့ ဆုံးဖြတ်လိုက်တယ်။ ဒါပေမဲ့ မသိသေးတာတစ်ခုရှိတယ်... သူ့ရဲ့ အနီးဆုံးလူကသာ သစ္စာဖောက်ထားတာ။"
+  </div>
+  <p>ဒါက <strong>gTTS (Google Translate TTS)</strong> free version ရဲ့ မြန်မာအသံပါ။<br>
+  နှိုင်းယှဉ်ဖို့ Google Cloud TTS (my-MM) နဲ့ ကွာဟချက် ကြည့်ပါ။</p>
+  <audio controls autoplay>
+    <source src="/api/public/test_myanmar.mp3" type="audio/mpeg">
+  </audio>
+</div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "kFn23IdEgkgfYpuZfpvig"
+uri = "file://README.md"
+type = "text"
+title = "Cherry Drama — Final README.md (Hook ထည့်ပြီး)"

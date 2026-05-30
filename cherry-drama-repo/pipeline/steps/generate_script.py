@@ -7,7 +7,7 @@ Uses:
 """
 import json
 import re
-import google.generativeai as genai
+from google import genai
 from PIL import Image
 
 
@@ -29,8 +29,7 @@ def analyze_scenes(
     Returns:
         Combined scene description string.
     """
-    genai.configure(api_key=gemini_key)
-    model = genai.GenerativeModel(GEMINI_MODEL)
+    client = genai.Client(api_key=gemini_key)
 
     scene_parts: list[str] = []
     for timestamp, img_path in frames[:MAX_FRAMES_FOR_ANALYSIS]:
@@ -50,7 +49,10 @@ def analyze_scenes(
         )
 
         try:
-            response = model.generate_content([prompt, img])
+            response = client.models.generate_content(
+                model=GEMINI_MODEL,
+                contents=[prompt, img],
+            )
             scene_parts.append(f"[Minute {int(timestamp // 60)}] {response.text.strip()}")
         except Exception as exc:
             print(f"[generate_script] Skipping frame at {timestamp}s due to error: {exc}", flush=True)
@@ -63,10 +65,8 @@ def _extract_json(text: str) -> str:
     text = text.strip()
     if text.startswith("```"):
         lines = text.split("\n")
-        # Remove first and last fence lines
         inner = lines[1:-1] if lines[-1].strip() == "```" else lines[1:]
         text = "\n".join(inner)
-    # Find the outermost JSON object
     match = re.search(r"\{.*\}", text, re.DOTALL)
     if match:
         return match.group(0)
@@ -99,8 +99,7 @@ def generate_recap_script(
       "outro_text": str
     }
     """
-    genai.configure(api_key=gemini_key)
-    model = genai.GenerativeModel(GEMINI_MODEL)
+    client = genai.Client(api_key=gemini_key)
 
     lang_instruction = (
         "Write ALL narrator text in Myanmar language (Burmese script မြန်မာဘာသာ)."
@@ -108,7 +107,6 @@ def generate_recap_script(
         else "Write ALL narrator text in Japanese language (日本語)."
     )
 
-    # Send up to 120 transcript segments to stay within token limits
     transcript_json = json.dumps(segments[:120], ensure_ascii=False)
 
     prompt = f"""You are a professional YouTube drama recap creator for "Cherry Drama" channel.
@@ -147,7 +145,10 @@ Rules:
 - outro_text: in target language, encourage subscription
 """
 
-    response = model.generate_content(prompt)
+    response = client.models.generate_content(
+        model=GEMINI_MODEL,
+        contents=prompt,
+    )
     raw = response.text
 
     try:

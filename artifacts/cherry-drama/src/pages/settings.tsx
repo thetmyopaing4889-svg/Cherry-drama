@@ -10,7 +10,6 @@ import { useToast } from "@/hooks/use-toast";
 const KEYS = {
   groq: "GROQ_API_KEY",
   gemini: "GEMINI_API_KEY",
-  azure: "AZURE_TTS_KEY",
 } as const;
 
 function ApiKeyField({ label, storageKey, description }: { label: string; storageKey: string; description: string }) {
@@ -106,12 +105,6 @@ export default function SettingsPage() {
               label="Gemini API Key"
               storageKey={KEYS.gemini}
               description="Used for scene analysis and recap script generation. Get yours at aistudio.google.com"
-            />
-            <div className="border-t border-border" />
-            <ApiKeyField
-              label="Azure TTS Key"
-              storageKey={KEYS.azure}
-              description="Used for Myanmar narrator voice (my-MM-ThihaNeural). Get yours at azure.microsoft.com"
             />
           </CardContent>
         </Card>

@@ -21,7 +21,7 @@ for (const dir of [MULTER_TEMP, UPLOADS_TEMP, UPLOADS_DIR]) {
   fs.mkdirSync(dir, { recursive: true });
 }
 
-const jobApiKeys = new Map<number, { groq: string; gemini: string; azure: string }>();
+const jobApiKeys = new Map<number, { groq: string; gemini: string }>();
 
 const upload = multer({
   dest: MULTER_TEMP,
@@ -72,11 +72,10 @@ router.post("/jobs/start", async (req: Request, res: Response) => {
 
   const groqKey = (req.headers["x-groq-key"] as string | undefined) ?? "";
   const geminiKey = (req.headers["x-gemini-key"] as string | undefined) ?? "";
-  const azureKey = (req.headers["x-azure-key"] as string | undefined) ?? "";
 
-  if (!groqKey || !geminiKey || !azureKey) {
+  if (!groqKey || !geminiKey) {
     res.status(400).json({
-      error: "Missing API keys. Please set Groq API Key, Gemini API Key, and Azure TTS Key in Settings before starting.",
+      error: "Missing API keys. Please set Groq API Key and Gemini API Key in Settings before starting.",
     });
     return;
   }
@@ -133,7 +132,7 @@ router.post("/jobs/start", async (req: Request, res: Response) => {
     })
     .returning();
 
-  jobApiKeys.set(job.id, { groq: groqKey, gemini: geminiKey, azure: azureKey });
+  jobApiKeys.set(job.id, { groq: groqKey, gemini: geminiKey });
 
   req.log.info({ jobId: job.id, movieTitle, language }, "Job created and queued");
 

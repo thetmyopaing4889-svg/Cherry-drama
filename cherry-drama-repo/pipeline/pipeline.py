@@ -13,8 +13,8 @@ from progress import update_progress, get_job_api_keys
 from steps.transcribe import transcribe_video, segments_to_srt
 from steps.extract_frames import extract_key_frames
 from steps.generate_script import analyze_scenes, generate_recap_script
-from steps.tts_myanmar import generate_myanmar_audio
-from steps.tts_japanese import generate_japanese_audio
+from steps.tts_myanmar import generate_myanmar_audio  # no API key needed (edge-tts)
+from steps.tts_japanese import generate_japanese_audio  # no API key needed (edge-tts)
 from steps.compose_video import compose_full_video
 from steps.generate_thumbnail import generate_thumbnail
 
@@ -50,7 +50,6 @@ def run_pipeline(job_id: int, movie_title: str, language: str, video_filename: s
 
         groq_key = keys["groq"]
         gemini_key = keys["gemini"]
-        azure_key = keys["azure"]
 
         # ── Stage 1: Transcription (2 → 20%) ───────────────────────────────
         update_progress(job_id, "processing", 5, "Transcribing audio")
@@ -92,17 +91,9 @@ def run_pipeline(job_id: int, movie_title: str, language: str, video_filename: s
         for i, seg in enumerate(script_segments):
             audio_path = os.path.join(audio_dir, f"seg_{i:03d}.mp3")
             if language == "myanmar":
-                generate_myanmar_audio(seg["text"], azure_key, audio_path)
+                generate_myanmar_audio(seg["text"], audio_path)
             else:
-                wav_path = audio_path.replace(".mp3", ".wav")
-                generate_japanese_audio(seg["text"], azure_key, wav_path)
-                # Convert WAV → MP3
-                import subprocess
-                subprocess.run(
-                    ["ffmpeg", "-y", "-i", wav_path, "-q:a", "4", audio_path],
-                    check=True, capture_output=True,
-                )
-                os.unlink(wav_path)
+                generate_japanese_audio(seg["text"], audio_path)
             audio_files.append(audio_path)
             pct = 52 + int(18 * (i + 1) / len(script_segments))
             update_progress(job_id, "processing", pct, "Generating narrator voice")

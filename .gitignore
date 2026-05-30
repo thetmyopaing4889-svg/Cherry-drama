@@ -47,3 +47,7 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Pipeline temp upload chunks
+cherry-drama-repo/pipeline/uploads_temp/
+cherry-drama-repo/pipeline/uploads/

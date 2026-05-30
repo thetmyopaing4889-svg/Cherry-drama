@@ -18,14 +18,12 @@ const CHUNK_SIZE = 5 * 1024 * 1024;
 const STORAGE_KEYS = {
   groq: "GROQ_API_KEY",
   gemini: "GEMINI_API_KEY",
-  azure: "AZURE_TTS_KEY",
 } as const;
 
 function getApiKeys() {
   return {
     groq: localStorage.getItem(STORAGE_KEYS.groq) ?? "",
     gemini: localStorage.getItem(STORAGE_KEYS.gemini) ?? "",
-    azure: localStorage.getItem(STORAGE_KEYS.azure) ?? "",
   };
 }
 
@@ -161,7 +159,6 @@ export default function UploadPage() {
     const missingKeys: string[] = [];
     if (!keys.groq) missingKeys.push("Groq API Key");
     if (!keys.gemini) missingKeys.push("Gemini API Key");
-    if (!keys.azure) missingKeys.push("Azure TTS Key");
 
     if (missingKeys.length > 0) {
       setErrorMsg(
@@ -196,7 +193,6 @@ export default function UploadPage() {
           "Content-Type": "application/json",
           "x-groq-key": keys.groq,
           "x-gemini-key": keys.gemini,
-          "x-azure-key": keys.azure,
         },
         body: JSON.stringify({
           uploadId,
@@ -232,7 +228,6 @@ export default function UploadPage() {
   const missingKeys = [
     !keys.groq && "Groq",
     !keys.gemini && "Gemini",
-    !keys.azure && "Azure TTS",
   ].filter(Boolean) as string[];
 
   return (
@@ -443,7 +438,7 @@ export default function UploadPage() {
                     ["1", "Audio extract + Whisper transcription"],
                     ["2", "Key frame scene analysis (Gemini)"],
                     ["3", "Recap script generation (Gemini 2.5)"],
-                    ["4", "Narrator voice synthesis (Azure TTS)"],
+                    ["4", "Narrator voice synthesis (Edge TTS)"],
                     ["5", "Video assembly + subtitles (FFmpeg)"],
                     ["6", "Thumbnail generation"],
                   ].map(([n, label]) => (
@@ -461,7 +456,6 @@ export default function UploadPage() {
                 {[
                   { label: "Groq API Key", ok: !!keys.groq },
                   { label: "Gemini API Key", ok: !!keys.gemini },
-                  { label: "Azure TTS Key", ok: !!keys.azure },
                 ].map(({ label, ok }) => (
                   <div
                     key={label}

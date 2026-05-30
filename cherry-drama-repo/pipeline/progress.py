@@ -49,7 +49,7 @@ def update_progress(
 def get_job_api_keys(job_id: int) -> dict:
     """
     Fetch API keys stored in memory on the Express server for this job.
-    Returns dict with keys: groq, gemini, azure.
+    Returns dict with keys: groq, gemini.
     Raises RuntimeError if keys cannot be retrieved.
     """
     try:
@@ -61,9 +61,8 @@ def get_job_api_keys(job_id: int) -> dict:
         data = resp.json()
         groq = data.get("groq", "")
         gemini = data.get("gemini", "")
-        azure = data.get("azure", "")
-        if not groq or not gemini or not azure:
+        if not groq or not gemini:
             raise RuntimeError("One or more API keys are empty. Please check Settings.")
-        return {"groq": groq, "gemini": gemini, "azure": azure}
+        return {"groq": groq, "gemini": gemini}
     except requests.RequestException as exc:
         raise RuntimeError(f"Could not retrieve API keys from server: {exc}") from exc

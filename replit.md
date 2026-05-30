@@ -21,7 +21,7 @@ AI-powered drama recap video generator for a Myanmar/Japanese YouTube channel.
 - Validation: Zod (`zod/v4`), `drizzle-zod`
 - API codegen: Orval (from OpenAPI spec)
 - Build: esbuild (CJS bundle)
-- Pipeline: Python 3 — Whisper (Groq), Gemini 2.5 Flash, Azure TTS, FFmpeg
+- Pipeline: Python 3 — Whisper (Groq), Gemini 2.5 Flash, Edge TTS (free, no key), FFmpeg
 
 ## Where things live
 
